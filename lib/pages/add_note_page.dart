@@ -62,12 +62,14 @@ class _AddNotePageState extends State<AddNotePage> {
                     id: _note!.id,
                     title: title,
                     description: description,
+                    createdDate: _note!.createdDate,
                   );
                   context.read<NoteCubit>().updateNote(note);
                 } else {
                   note = NoteModel(
                     title: title,
                     description: description,
+                    createdDate: DateTime.now(),
                   );
                   context.read<NoteCubit>().addNote(note);
                 }

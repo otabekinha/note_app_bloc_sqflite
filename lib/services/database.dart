@@ -79,7 +79,8 @@ class NoteDatabaseHelper {
     CREATE TABLE notes(
       id INTEGER PRIMARY KEY,
       title TEXT,
-      description TEXT
+      description TEXT,
+      createdDate TEXT
     )
   ''';
 }

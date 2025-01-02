@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import 'package:note_app/core/navigation/app_router.dart';
 import 'package:note_app/core/theme/app_pallete.dart';
 import 'package:note_app/cubit/note_cubit.dart';
@@ -63,6 +64,13 @@ class NotePage extends StatelessWidget {
                           ),
                           subtitle: Text(
                             note.description,
+                            style: TextStyle(
+                              fontSize: 14,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                          trailing: Text(
+                            '${note.description}\nCreated: ${DateFormat('yMMMd').format(note.createdDate)}',
                             style: TextStyle(
                               fontSize: 14,
                               overflow: TextOverflow.ellipsis,

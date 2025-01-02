@@ -2,11 +2,13 @@ class NoteModel {
   final int? id;
   final String title;
   final String description;
+  final DateTime createdDate;
 
   NoteModel({
     this.id,
     required this.title,
     required this.description,
+    required this.createdDate,
   });
 
   factory NoteModel.fromMap(Map<String, dynamic> map) {
@@ -14,6 +16,7 @@ class NoteModel {
       id: map['id'],
       title: map['title'],
       description: map['description'],
+      createdDate: DateTime.parse(map['createdDate']),
     );
   }
 
@@ -22,6 +25,7 @@ class NoteModel {
       'id': id,
       'title': title,
       'description': description,
+      'createdDate': createdDate.toIso8601String(),
     };
   }
 }
