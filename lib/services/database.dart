@@ -34,18 +34,12 @@ class NoteDatabaseHelper {
     }
   }
 
-  Future<List<NoteModel>> getTasks() async {
+  Future<List<NoteModel>> getAllNotes() async {
     final Database db = await database;
-
     final List<Map<String, dynamic>> maps = await db.query('notes');
 
     return List.generate(maps.length, (i) {
-      return NoteModel(
-        id: maps[i]['id'],
-        title: maps[i]['title'],
-        description: maps[i]['description'],
-        completed: maps[i]['completed'],
-      );
+      return NoteModel.fromMap(maps[i]);
     });
   }
 
@@ -85,8 +79,7 @@ class NoteDatabaseHelper {
     CREATE TABLE notes(
       id INTEGER PRIMARY KEY,
       title TEXT,
-      description TEXT,
-      completed INTEGER NOT NULL DEFAULT 0
+      description TEXT
     )
   ''';
 }
