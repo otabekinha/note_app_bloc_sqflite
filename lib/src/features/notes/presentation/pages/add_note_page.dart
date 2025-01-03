@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
-import 'package:note_app/cubit/note_cubit.dart';
-import 'package:note_app/models/note_model.dart';
-import 'package:note_app/widgets/custom_textfield.dart';
+import 'package:note_app/src/features/notes/data/models/note_model.dart';
+import 'package:note_app/src/features/notes/presentation/cubit/note_cubit.dart';
+import 'package:note_app/src/features/notes/presentation/widgets/custom_textfield.dart';
 
 class AddNotePage extends StatefulWidget {
-  const AddNotePage({super.key});
+  final NoteModel? noteToEdit;
+  const AddNotePage({super.key, this.noteToEdit});
 
   @override
   State<AddNotePage> createState() => _AddNotePageState();
@@ -15,15 +15,14 @@ class AddNotePage extends StatefulWidget {
 class _AddNotePageState extends State<AddNotePage> {
   final TextEditingController titleController = TextEditingController();
   final TextEditingController contentController = TextEditingController();
-  NoteModel? _note;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _note = GoRouterState.of(context).extra as NoteModel?;
-    if (_note != null) {
-      titleController.text = _note!.title;
-      contentController.text = _note!.description;
+    // Check if noteToEdit is provided and populate controllers if it exists
+    if (widget.noteToEdit != null) {
+      titleController.text = widget.noteToEdit!.title;
+      contentController.text = widget.noteToEdit!.description;
     }
   }
 
@@ -52,31 +51,30 @@ class _AddNotePageState extends State<AddNotePage> {
             ),
             onPressed: () {
               final title = titleController.text.trim();
-              final description = contentController.text.trim();
+              final content = contentController.text.trim();
 
-              if (title.isNotEmpty && description.isNotEmpty) {
-                NoteModel note;
+              if (title.isNotEmpty && content.isNotEmpty) {
+                // Create the note model
+                final note = NoteModel(
+                  id: widget.noteToEdit?.id ?? DateTime.now().toString(),
+                  title: title,
+                  description: content,
+                );
 
-                if (_note != null) {
-                  note = NoteModel(
-                    id: _note!.id,
-                    title: title,
-                    description: description,
-                    createdDate: _note!.createdDate,
-                  );
+                if (widget.noteToEdit != null) {
+                  // If editing an existing note, update it
                   context.read<NoteCubit>().updateNote(note);
                 } else {
-                  note = NoteModel(
-                    title: title,
-                    description: description,
-                    createdDate: DateTime.now(),
-                  );
+                  // If adding a new note
                   context.read<NoteCubit>().addNote(note);
                 }
 
                 Navigator.pop(context);
               } else {
-                // ... (your error handling)
+                // You can show an error message if fields are empty
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('Title and content cannot be empty')),
+                );
               }
             },
             icon: Icon(Icons.check),

@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:intl/intl.dart';
-import 'package:note_app/core/navigation/app_router.dart';
-import 'package:note_app/core/theme/app_pallete.dart';
-import 'package:note_app/cubit/note_cubit.dart';
-import 'package:note_app/models/note_model.dart';
+import 'package:note_app/src/features/core/routes/app_router.dart';
+import 'package:note_app/src/features/core/theme/app_pallete.dart';
+import 'package:note_app/src/features/notes/presentation/cubit/note_cubit.dart';
+import 'package:note_app/src/features/notes/presentation/cubit/note_state.dart';
 
 class NotePage extends StatelessWidget {
   const NotePage({super.key});
@@ -39,51 +38,34 @@ class NotePage extends StatelessWidget {
                 fontFamily: 'ZillaSlab',
               ),
             ),
-            Expanded(
-              child: BlocBuilder<NoteCubit, List<NoteModel>>(
-                builder: (context, notes) {
+            Expanded(child: BlocBuilder<NoteCubit, NoteState>(
+              builder: (context, state) {
+                if (state is NoteLoading) {
+                  return Center(child: CircularProgressIndicator());
+                } else if (state is NoteLoaded) {
                   return ListView.builder(
-                    itemCount: notes.length,
+                    itemCount: state.notes.length,
                     itemBuilder: (context, index) {
-                      final note = notes[index];
                       return Card(
                         child: ListTile(
                           onTap: () {
                             context.goNamed(
                               AppRoute.addNotePage.name,
-                              extra: note,
+                              extra: state.notes[index],
                             );
                           },
-                          title: Text(
-                            note.title,
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w600,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                          subtitle: Text(
-                            note.description,
-                            style: TextStyle(
-                              fontSize: 14,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                          trailing: Text(
-                            '${note.description}\nCreated: ${DateFormat('yMMMd').format(note.createdDate)}',
-                            style: TextStyle(
-                              fontSize: 14,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                          isThreeLine: true,
+                          title: Text(state.notes[index].title),
+                          subtitle: Text(state.notes[index].description),
                         ),
                       );
                     },
                   );
-                },
-              ),
-            ),
+                } else if (state is NoteError) {
+                  return Center(child: Text(state.message));
+                }
+                return Center(child: Text('No notes available'));
+              },
+            )),
           ],
         ),
       ),
