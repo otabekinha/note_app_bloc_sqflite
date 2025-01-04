@@ -19,7 +19,6 @@ class _NotePageState extends State<NotePage> {
     return Scaffold(
       appBar: AppBar(
         actions: [
-          
           IconButton(
             onPressed: () {
               context.goNamed(AppRoute.settingsPage.name);
@@ -61,11 +60,11 @@ class _NotePageState extends State<NotePage> {
                       ),
                     );
                   } else {
-                    // final reversedNotes = state.notes.reversed.toList();
+                     final reversedNotes = state.notes.reversed.toList();
                     return ListView.builder(
-                      itemCount: state.notes.length,
+                       itemCount: reversedNotes.length,
                       itemBuilder: (context, index) {
-                        final note = state.notes[index];
+                        final note = reversedNotes[index];
 
                         return Padding(
                           padding: const EdgeInsets.only(bottom: 10),
@@ -73,8 +72,17 @@ class _NotePageState extends State<NotePage> {
                             key: ValueKey(note.id),
                             direction: DismissDirection.endToStart,
                             onDismissed: (direction) {
-                              final note = state.notes[index];
-                              context.read<NoteCubit>().deleteNote(note.id);
+                              final deletedNote = state.notes[index];
+                              context
+                                  .read<NoteCubit>()
+                                  .deleteNote(deletedNote.id);
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: const Text('Item deleted'),
+                                  duration: const Duration(seconds: 3),
+                                  behavior: SnackBarBehavior.floating,
+                                ),
+                              );
                             },
                             background: Container(
                               alignment: Alignment.centerRight,

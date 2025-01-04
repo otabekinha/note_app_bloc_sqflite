@@ -42,6 +42,13 @@ class _AddNotePageState extends State<AddNotePage> {
             IconButton(
               icon: Icon(Icons.delete),
               onPressed: () {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: const Text('Item deleted'),
+                    duration: const Duration(seconds: 3),
+                    behavior: SnackBarBehavior.floating,
+                  ),
+                );
                 context.read<NoteCubit>().deleteNote(widget.noteToEdit!.id);
                 Navigator.pop(context);
               },
@@ -81,7 +88,10 @@ class _AddNotePageState extends State<AddNotePage> {
                 Navigator.pop(context);
               } else {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('Title and content cannot be empty')),
+                  SnackBar(
+                    content: Text('Title and content cannot be empty'),
+                    behavior: SnackBarBehavior.floating,
+                  ),
                 );
               }
             },
