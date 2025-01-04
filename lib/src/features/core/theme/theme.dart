@@ -9,7 +9,9 @@ class AppTheme {
       backgroundColor: CupertinoColors.systemBackground,
     ),
     cardTheme: CardTheme(
-      color: CupertinoColors.extraLightBackgroundGray,
+      color: CupertinoColors.secondarySystemBackground,
+      shadowColor: Colors.grey.shade100,
+      elevation: 5,
     ),
     primaryColor: AppPallete.primaryColor,
     floatingActionButtonTheme: FloatingActionButtonThemeData(
@@ -30,7 +32,9 @@ class AppTheme {
       backgroundColor: CupertinoColors.darkBackgroundGray,
     ),
     cardTheme: CardTheme(
-      color: CupertinoColors.separator,
+      color: CupertinoColors.secondaryLabel,
+      shadowColor: CupertinoColors.black,
+      elevation: 5,
     ),
     primaryColor: Colors.white,
     floatingActionButtonTheme: FloatingActionButtonThemeData(

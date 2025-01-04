@@ -63,6 +63,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       label: Text('Dark'),
                     ),
                   ],
+
                   selected: {state}, // Passing a Set of ThemeState
                   onSelectionChanged: (Set<ThemeState> selected) {
                     context.read<ThemeCubit>().setThemeMode(selected.first);
