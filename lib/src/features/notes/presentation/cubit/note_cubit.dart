@@ -22,33 +22,28 @@ class NoteCubit extends Cubit<NoteState> {
   // Insert a new note
   Future<void> addNote(NoteModel note) async {
     try {
-      await noteLocalDataSource
-          .insertNote(note); // Insert note into local database
-      fetchAllNotes(); // Re-fetch all notes after insertion
+      await noteLocalDataSource.insertNote(note);
+      fetchAllNotes();
     } catch (e) {
-      emit(NoteError(
-          message: 'Failed to add note: $e')); // Emit error state on failure
+      emit(NoteError(message: 'Failed to add note: $e'));
     }
   }
 
   // Update an existing note
   Future<void> updateNote(NoteModel note) async {
     try {
-      await noteLocalDataSource
-          .updateNote(note); // Update note in the local database
-      fetchAllNotes(); // Re-fetch all notes after update
+      await noteLocalDataSource.updateNote(note);
+      fetchAllNotes();
     } catch (e) {
-      emit(NoteError(
-          message: 'Failed to update note: $e')); // Emit error state on failure
+      emit(NoteError(message: 'Failed to update note: $e'));
     }
   }
 
   // Delete a note
   Future<void> deleteNote(String id) async {
     try {
-      await noteLocalDataSource
-          .deleteNote(id); // Delete note from local database
-      fetchAllNotes(); // Re-fetch all notes after deletion
+      await noteLocalDataSource.deleteNote(id);
+      fetchAllNotes();
     } catch (e) {
       emit(NoteError(
           message: 'Failed to delete note: $e')); // Emit error state on failure

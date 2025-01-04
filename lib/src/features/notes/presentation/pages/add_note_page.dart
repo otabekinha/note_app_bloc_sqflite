@@ -38,6 +38,15 @@ class _AddNotePageState extends State<AddNotePage> {
     return Scaffold(
       appBar: AppBar(
         actions: [
+          if (widget.noteToEdit != null)
+            IconButton(
+              icon: Icon(Icons.delete),
+              onPressed: () {
+                context.read<NoteCubit>().deleteNote(widget.noteToEdit!.id);
+                Navigator.pop(context);
+              },
+            ),
+          const SizedBox(width: 10),
           ElevatedButton.icon(
             style: ElevatedButton.styleFrom(
               shape: RoundedRectangleBorder(
@@ -71,7 +80,6 @@ class _AddNotePageState extends State<AddNotePage> {
 
                 Navigator.pop(context);
               } else {
-                // You can show an error message if fields are empty
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(content: Text('Title and content cannot be empty')),
                 );
